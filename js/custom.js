@@ -277,7 +277,7 @@ $(function() {
 		"outputs": [
 			{
 				"name": "",
-				"type": "uint8"
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -511,7 +511,7 @@ $(function() {
 		data: {
             default_upline: 'TSTgfvVACpuSBMUmsYUG2FyfFdfiFx6e6p',
             upline: 'TSTgfvVACpuSBMUmsYUG2FyfFdfiFx6e6p',
-            contract_address: 'TT6XXZf1fjobZEkBk9QCujqJc5azDR9qHg',
+            contract_address: 'TBnR6DAraKRsiFHHkcPtTxvMLSr1g1b1Di',
             contract: {
                 invested: 0,
                 withdraw: 0,

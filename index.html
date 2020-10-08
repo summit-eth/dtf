@@ -54,7 +54,7 @@
 	<div class="container">
 		<div class="sub" v-if="user.total_invested == 0">
 			<h6>Your future, for a minimum of 200 trx.</h6>
-			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TT6XXZf1fjobZEkBk9QCujqJc5azDR9qHg/code')">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
+			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TBnR6DAraKRsiFHHkcPtTxvMLSr1g1b1Di/code')">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
 		</div>
 		<div class="sub" v-if="user.total_invested == 0 && contract.launch_date <= current_date"><h4>Contract running for {{ countdown(new Date(contract.launch_date * 1000)).toString() }}</h4></div>
 		<div class="sub">
@@ -161,7 +161,7 @@
 		<div class="sub">
 			<h6>Questions?</h6>
 			<button id="view_telegram" @click="window.open('https://t.me/joinchat/Tog0whq3fzl9gJ6GpPSxuQ')">JOIN OUR TELEGRAM GROUP &nbsp;&nbsp;[&#x2197;]</button>
-			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TT6XXZf1fjobZEkBk9QCujqJc5azDR9qHg/code')" v-if="user.total_invested > 0">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
+			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TBnR6DAraKRsiFHHkcPtTxvMLSr1g1b1Di/code')" v-if="user.total_invested > 0">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
 		</div>
 	</div>
 	
