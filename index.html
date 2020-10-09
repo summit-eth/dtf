@@ -33,6 +33,20 @@
 			<h1 style="text-align: center">Launching in {{ countdown(new Date(contract.launch_date * 1000)).toString() }}!</h1>
 		</div>
 	</div>
+
+	<div class="container" v-if="(parseInt(contract.launch_date) - 7200) > current_date">
+		<div class="sub">
+			<h3>Notice to the public:</h3>
+			<div class="sub">
+				<h3>The previous contract &amp; investments were compromised due to a loophole in the program itself.</h3>
+				<hr>
+				<h3>Please be advised that the dtron team has fixed and reviewed every line of code and is now foolproof.</h3>
+			</div>
+			<div class="sub">
+				<h3>New changes: <u>a minimum of 1 day hold for open investments.</u></h3>
+			</div>
+		</div>
+	</div>
 	
 	<div id="c_invest" class="container" v-if="user.total_invested > 0">
 		<div class="sub">
@@ -53,8 +67,8 @@
 	
 	<div class="container">
 		<div class="sub" v-if="user.total_invested == 0">
-			<h6>Your future, for a minimum of 200 trx.</h6>
-			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TBnR6DAraKRsiFHHkcPtTxvMLSr1g1b1Di/code')">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
+			<!--h6>Your future, for a minimum of 200 trx.</h6-->
+			<button style="margin-top: 0" id="view_contract" @click="window.open('https://tronscan.org/#/contract/TEytTWPQNvtZB3ynuE7RdXsDQTkwCJMFvv/code')">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
 		</div>
 		<div class="sub" v-if="user.total_invested == 0 && contract.launch_date <= current_date"><h4>Contract running for {{ countdown(new Date(contract.launch_date * 1000)).toString() }}</h4></div>
 		<div class="sub">
@@ -63,13 +77,14 @@
 			<h3 v-if="contract.launch_date > current_date">All pre-launch investments will have +1%/day.</h3>
 			<div class="sub">
 				<h3>Locked Contract: 1.5%<span v-if="contract.launch_date > current_date" highlight>+1%</span> daily ROI</h3>
-				<h5>You cannot withdraw your investment, only daily ROI.</h5>
+				<h5>You <u>cannot</u> withdraw your investment, only daily ROI.</h5>
 				<input type="number" min="200" placeholder="200 trx" value="200" id="trx_value" v-model.number="calc.amount" @change="calc.amount = calc.amount < 200 ? 200 : calc.amount">
 				<button id="btn_invest" @click.prevent="deposit((contract.launch_date > current_date)?0:2, calc.amount)">INVEST</button>
 			</div>
 			<div class="sub">
 				<h3>Open Contract: 0.5%<span v-if="contract.launch_date > current_date"highlight>+1%</span> daily ROI</h3>
-				<h5>Withdraw your investments anytime.</h5>
+				<h5>Minimum investment hold of 1 day.</h5>
+				<h5><u>20% penalty</u> of early investment withdrawal.</h5>
 				<input type="number" min="200" placeholder="200 trx" value="200" id="trx_value" v-model.number="calc.amount" @change="calc.amount = calc.amount < 200 ? 200 : calc.amount">
 				<button id="btn_invest" @click.prevent="deposit((contract.launch_date > current_date)?1:3, calc.amount)">INVEST</button>
 			</div>
@@ -77,10 +92,8 @@
 		<div class="sub" v-if="user.total_invested > 0 && tronWeb != undefined">
 			<h1>Investment Data</h1>
 			<table style="zoom: 80%">
-				<thead><th>Amount</th><th>Withdrawable</th><th>&nbsp;</th></thead>
+				<thead><th>&nbsp;</th><th>Amount</th><th>Withdrawable</th></thead>
 				<tr v-for="(dep, index) in user.deposits" v-if="dep[1] != 0">
-					<td>{{ tronWeb.fromSun(dep[1]) }} trx <span v-if="dep[0] == 0">@ 2.5%/day</span><span v-if="dep[0] == 1">@ 1.5%/day</span><span v-if="dep[0] == 2">@ 1.5%/day</span><span v-if="dep[0] == 3">@ 0.5%/day</span></td>
-					<td><span v-if="dep[4] > 0">{{ tronWeb.fromSun(dep[4]) }} trx</span><span v-else>{{ tronWeb.fromSun(dep[3]) }} trx</span></td>
 					<td>
 						<span v-if="dep[0] == 0 || dep[0] == 2">
 							LOCKED
@@ -88,11 +101,13 @@
 						<span v-else>
 							<span v-if="dep[4] > 0">WITHDRAWN</span>
 							<span v-else>
-								<button v-if="contract.launch_date <= current_date" @click="withdraw_single(index)">WITHDRAW ALL</button>
+								<button v-if="contract.launch_date <= current_date" @click="withdraw_single(index)">WITHDRAW<span highlight v-if="(parseInt(dep[5]) + 86400) > current_date">-20%</span></button>
 								<span v-if="contract.launch_date > current_date">NOT YET LAUNCHED</span>
 							</span>
 						</span>
 					</td>
+					<td>{{ tronWeb.fromSun(dep[1]) }} trx <span v-if="dep[0] == 0">@ 2.5%/day</span><span v-if="dep[0] == 1">@ 1.5%/day</span><span v-if="dep[0] == 2">@ 1.5%/day</span><span v-if="dep[0] == 3">@ 0.5%/day</span></td>
+					<td><span v-if="dep[4] > 0">{{ tronWeb.fromSun(dep[4]) }} trx</span><span v-else>{{ tronWeb.fromSun(dep[3]) }} trx</span></td>
 				</tr>
 			</table>
 		</div>
@@ -161,7 +176,7 @@
 		<div class="sub">
 			<h6>Questions?</h6>
 			<button id="view_telegram" @click="window.open('https://t.me/joinchat/Tog0whq3fzl9gJ6GpPSxuQ')">JOIN OUR TELEGRAM GROUP &nbsp;&nbsp;[&#x2197;]</button>
-			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TBnR6DAraKRsiFHHkcPtTxvMLSr1g1b1Di/code')" v-if="user.total_invested > 0">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
+			<button id="view_contract" @click="window.open('https://tronscan.org/#/contract/TEytTWPQNvtZB3ynuE7RdXsDQTkwCJMFvv/code')" v-if="user.total_invested > 0">VERIFIED SMART CONTRACT &nbsp;&nbsp;[&#x2197;]</button>
 		</div>
 	</div>
 	
